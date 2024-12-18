@@ -335,7 +335,7 @@ Romance (2694 items).
 To solve the above problems, the following SQL techniques were used:
 
 ### 1. Filtering Data
-- WHERE clause was used extensively to filter data based on specific conditions, like filtering by content type or extracting content added in the last 5 years.
+- **WHERE** clause was used extensively to filter data based on specific conditions, like filtering by content type or extracting content added in the last 5 years.
 
 ### 2. Aggregation and Grouping
 - GROUP BY was used for summarizing data, such as counting the number of movies vs TV shows and calculating the number of content items per genre and per country.
