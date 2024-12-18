@@ -36,12 +36,13 @@ CREATE TABLE appletv
 
 ## Problems and Solutions
 
-### 1. Count the number of movies vs tv shows.
+### 1. Count the number of movies vs tv shows in the whole numbers and percentage.
 
 ```sql
 SELECT 
 	type, 
-	COUNT(*) AS content_number
+	COUNT(*) AS content_number,
+	ROUND(COUNT(*)*100/SUM(COUNT(*)) OVER(), 2) AS percentage
 FROM appletv
 GROUP BY type
 ```
@@ -138,7 +139,7 @@ SELECT
 	ROUND(AVG(imdb_num_votes)) AS avg_num_of_votes
 FROM appletv
 GROUP BY genre
-HAVING AVG(imdb_avg_rating) IS NOT NULL
+HAVING AVG(imdb_avg_rating) IS NOT NULL AND ROUND(AVG(imdb_num_votes)) > 1000
 ORDER BY 2 DESC, 3 DESC
 ```
 
@@ -278,3 +279,26 @@ LIMIT 5
 ```
 
 **Objective:** Determine the global appeal and reach of specific movies and TV shows by analyzing their availability across countries.
+
+## Key Findings
+
+### 1. Content Distribution
+- Movies make up 77.68% of the content on Apple TV+, while TV shows account for 22.32%.
+
+### 2. IMDb Rating Insights
+- The most common IMDb rating for movies is 6.3, while for TV shows it is 7.3.
+- The top 10 movies and top 10 TV series, filtered for more than 10000 votes, revealed critically acclaimed titles such as the movie "The Godfather" (IMDb rating 9.2) and the TV show "Avatar: The Last Airbender" (IMDb rating 9.3).
+
+### 3. Genre and Votes Analysis
+- Genres with the highest average IMDb ratings are:
+Documentary (7.25 average rating).
+History (7.18 average rating).
+Biography (6.97 average rating).
+
+- Genres with the most content are:
+Drama (8126 items).
+Comedy (4638 items).
+Romance (2694 items).
+
+### 4. Regional Insights
+- The top 5 countries with the most
