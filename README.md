@@ -338,18 +338,26 @@ To solve the above problems, the following SQL techniques were used:
 - **WHERE** clause was used extensively to filter data based on specific conditions, like filtering by content type or extracting content added in the last 5 years.
 
 ### 2. Aggregation and Grouping
-- GROUP BY was used for summarizing data, such as counting the number of movies vs TV shows and calculating the number of content items per genre and per country.
-- Aggregate functions like COUNT(), AVG(), SUM() and ROUND() were used to compute summary statistics, like average IMDb ratings and vote counts for each genre.
+- **GROUP BY** was used for summarizing data, such as counting the number of movies vs TV shows and calculating the number of content items per genre and per country.
+- Aggregate functions like **COUNT()**, **AVG()**, **SUM()** and **ROUND()** were used to compute summary statistics, like average IMDb ratings and vote counts for each genre.
 
 ### 3. Ranking and Window Functions
-- RANK() and PERCENTILE_CONT() were applied for such calculations as finding the best movie or TV series for each release year and calculating the median IMDb rating for movies and TV shows.
+- **RANK()** and **PERCENTILE_CONT()** were applied for such calculations as finding the best movie or TV series for each release year and calculating the median IMDb rating for movies and TV shows.
 
 ### 4. Common Table Expressions
 - CTEs improved query readability and allowed for intermediate data processing like filtering data before further processing (e.g., IMDb votes > 10000) or joining with CTEs to calculate percetages from totals.
 
 ### 5. String Operations
-- STRING_TO_ARRAY and UNNEST were used to split lists of countries and genres into individual rows for analysis.
-- LIKE was used to identify multi-genre content by searching for commas.
+- **STRING_TO_ARRAY** and **UNNEST** were used to split lists of countries and genres into individual rows for analysis.
+- **LIKE** was used to identify multi-genre content by searching for commas.
 
 ### 6. Sorting and Limiting
-- ORDER BY with LIMIT was used to retrieve top results, such as finding the top 5 countries with the most content.
+- **ORDER BY** with **LIMIT** was used to retrieve top results, such as finding the top 5 countries with the most content.
+
+## Conclusions
+
+1. **Content Diversity**: Apple TV+ offers a wide range of content, with a strong focus on genres like Drama, Comedy and Romance.
+2. **Top Content**: Critically acclaimed movies and TV series are primarily in the Documentary, History and Biography genres, with high IMDb ratings and significant audience votes.
+3. **Regional Strengths**: Content availability is concentrated in countries like the US, Canada and Australia, but smaller markets like Israel also show increasing accessibility in recent years.
+4. **Recent Growth**: The platform's content library has expanded rapidly in the last 5 years, with an increasing focus on TV series.
+5. **Multi-Genre Appeal**: A significant portion of movies and TV series belong to multiple genres, appealing to diverse audience preferences.
