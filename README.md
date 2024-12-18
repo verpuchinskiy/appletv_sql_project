@@ -36,7 +36,7 @@ CREATE TABLE appletv
 
 ## Problems and Solutions
 
-### 1. Count the number of movies vs tv shows
+### 1. Count the number of movies vs tv shows.
 
 ```sql
 SELECT 
@@ -48,7 +48,7 @@ GROUP BY type
 
 **Objective:** Determine the distribution of content types (movies vs TV shows) on Apple TV+ to analyze the balance between the two categories.
 
-### 2. Find the most common IMDb rating for movies and tv shows
+### 2. Find the most common IMDb rating for movies and tv shows.
 
 ```sql
 SELECT
@@ -60,7 +60,7 @@ GROUP BY type
 
 **Objective:** Identify the typical audience reception of movies and TV shows by analyzing the most frequently occurring IMDb ratings.
 
-### 3. List all movies released in 1987
+### 3. List all movies released in 1987.
 
 ```sql
 SELECT *
@@ -72,7 +72,7 @@ WHERE 	release_year = 1987
 
 **Objective:** Analyze the content catalog for a specific year to understand the availability of older movies on Apple TV+.
 
-### 4. Find the top 5 countries with the most content on Apple TV
+### 4. Find the top 5 countries with the most content on Apple TV.
 
 ```sql
 SELECT 
@@ -119,7 +119,7 @@ ORDER BY type, imdb_avg_rating DESC
 
 **Objective:** Highlight the top-performing movies and TV shows in terms of IMDb ratings to showcase critically acclaimed and audience-approved content.
 
-### 6. Find content added in the last 5 years
+### 6. Find content added in the last 5 years.
 
 ```sql
 SELECT *
@@ -129,7 +129,7 @@ WHERE release_year >= EXTRACT(YEAR FROM (CURRENT_DATE - INTERVAL '5 years'))
 
 **Objective:** Analyze the recency of Apple TV+ content and identify the size of the library consisting of modern releases.
 
-### 7. Find an average IMDb rating and average number of IMDb votes for each genre
+### 7. Find an average IMDb rating and average number of IMDb votes for each genre.
 
 ```sql
 SELECT 
@@ -159,7 +159,7 @@ ORDER BY release_year
 
 **Objective:** Explore release trends over time and identify whether Apple TV+ focuses more on movies or TV shows in specific years.
 
-### 9. Count the number of content items in each genre
+### 9. Count the number of content items in each genre.
 
 ```sql
 SELECT 
@@ -193,3 +193,88 @@ LIMIT 5
 ```
 
 **Objective:** Evaluate the growth of Apple TV+ content availability in Ukraine and identify the most content-rich years.
+
+### 11. Find the quantity of TV series and movies that belong to several genres simultaneously.
+
+```sql
+SELECT 
+	type, 
+	COUNT(*) AS multi_genre_count
+FROM appletv
+WHERE genres LIKE '%,%'
+GROUP BY type
+```
+
+**Objective:** Analyze the multi-genre distribution to determine how much content spans multiple genres, appealing to diverse audience preferences.
+
+### 12. Which 5 countries have the highest average IMDb rating of the available content.
+
+```sql
+SELECT 
+	UNNEST(STRING_TO_ARRAY(available_countries, ', ')) AS country,
+	ROUND(AVG(imdb_avg_rating), 2)
+FROM appletv
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 5
+```
+
+**Objective:** Discover which countries have the highest-rated content available, indicating regions with a focus on quality offerings.
+
+### 13. Find the best movie or tv series by imdb rating for each release year.
+
+```sql
+WITH ranks AS (
+	SELECT 
+	title, 
+	type, 
+	release_year, 
+	imdb_avg_rating,
+	RANK() OVER(PARTITION BY release_YEAR ORDER BY imdb_avg_rating DESC)
+FROM appletv
+WHERE imdb_avg_rating IS NOT NULL
+)
+
+SELECT *
+FROM ranks
+WHERE rank = 1
+```
+
+**Objective:** Identify standout content for each release year to showcase year-by-year highlights on Apple TV+.
+
+### 14. Find the years when content with the highest IMDb rating was released.
+
+```sql
+SELECT 
+	release_year, 
+	ROUND(AVG(imdb_avg_rating), 2) AS rating,
+	COUNT(*) AS film_count
+FROM appletv
+GROUP BY release_year
+HAVING AVG(imdb_avg_rating) IS NOT NULL AND COUNT(*) > 10
+ORDER BY 2 DESC
+```
+
+**Objective:** Analyze the timeline of top-rated content to understand when were released the most critically acclaimed movies and TV shows.
+
+### 15. Find top 5 movies and tv series that are available in the biggest number of countries.
+
+```sql
+WITH films_countries AS (
+	SELECT 
+		UNNEST(STRING_TO_ARRAY(available_countries, ', ')) AS country,
+		title
+	FROM appletv
+)
+
+SELECT 
+	title, 
+	COUNT(country) AS countries_count
+FROM films_countries
+WHERE title IS NOT NULL
+GROUP BY title
+ORDER BY 2 DESC
+LIMIT 5
+```
+
+**Objective:** Determine the global appeal and reach of specific movies and TV shows by analyzing their availability across countries.
