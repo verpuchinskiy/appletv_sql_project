@@ -14,3 +14,36 @@ The primary objectives of this project are:
 4. To uncover patterns in multi-genre content, release trends, and top-rated items by various criteria.
 
 ## Dataset
+The data for this project is taken from the Kaggle dataset:
+- **Dataset Link:** [Apple TV+ Dataset](https://www.kaggle.com/datasets/octopusteam/full-apple-tv-dataset)
+
+## Schema
+
+```sql
+DROP TABLE IF EXISTS appletv;
+CREATE TABLE appletv
+(
+    title               VARCHAR(150),
+    type                VARCHAR(6),
+    genres              VARCHAR(50),
+    release_year        INT,
+    imdb_id             VARCHAR(10),
+    imdb_avg_rating     NUMERIC,
+    imdb_num_votes      INT,
+    available_countries VARCHAR(350)
+);
+```
+
+## Problems and Solutions
+
+### 1. Count the number of movies vs tv shows
+
+```sql
+SELECT 
+	type, 
+	COUNT(*) AS content_number
+FROM appletv
+GROUP BY type
+```
+
+**Objective:** Determine the distribution of content types (movies vs TV shows) on Apple TV+ to analyze the balance between the two categories.
