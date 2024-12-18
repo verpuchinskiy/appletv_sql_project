@@ -195,15 +195,21 @@ LIMIT 5
 
 **Objective:** Evaluate the growth of Apple TV+ content availability in Ukraine and identify the most content-rich years.
 
-### 11. Find the quantity of TV series and movies that belong to several genres simultaneously.
+### 11. Find the quantity of TV series and movies that belong to several genres simultaneously and determine their percentage of the overall quantity.
 
 ```sql
-SELECT 
-	type, 
-	COUNT(*) AS multi_genre_count
+WITH cte AS (SELECT type, COUNT(*) AS total
 FROM appletv
+GROUP BY type)
+
+SELECT 
+	a.type, 
+	COUNT(*) AS multi_genre_count,
+	COUNT(*) * 100 / total
+FROM appletv a
+JOIN cte USING (type)
 WHERE genres LIKE '%,%'
-GROUP BY type
+GROUP BY type, total
 ```
 
 **Objective:** Analyze the multi-genre distribution to determine how much content spans multiple genres, appealing to diverse audience preferences.
@@ -301,4 +307,23 @@ Comedy (4638 items).
 Romance (2694 items).
 
 ### 4. Regional Insights
-- The top 5 countries with the most
+- The top 5 countries with the most content are:
+1. USA
+2. Canada
+3. Australia
+4. India
+5. Germany
+
+- The 5 countries with the highest average IMDb ratings of content are:
+1. Norway
+2. Uganda
+3. Belarus
+4. Greece
+5. Portugal
+
+### 5. Release Year Trends
+- The year with the most content released is 2022, with 1159 items added.
+- The top 5 years with the highest content availability for Ukraine are 2020, 2021, 2022, 2023, 2024, with 34, 41, 54, 54 and 43 items available in those years.
+
+### 6. Multi-Genre Content
+- 68% of movies and 53% of TV series belong to multiple genres.
